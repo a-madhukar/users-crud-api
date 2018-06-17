@@ -47,11 +47,9 @@ class User
 
 
 
+
     public static function findAndUpdate($attributes, $id)
     {
-
-        if(strlen($id) < 24) return null; 
-
         $filters = ["_id" => new ObjectId("$id")]; 
 
         $record = self::collection()->findOneAndReplace($filters, $attributes); 
@@ -75,8 +73,6 @@ class User
 
     public static function findById($id)
     {
-        if(strlen($id) < 24) return null; 
-
         return self::collection()->findOne([
             "_id" => new ObjectId("$id"),  
         ]);
@@ -88,8 +84,6 @@ class User
 
     public static function delete($id)
     {
-        if(strlen($id) < 24) return null; 
-
         return self::collection()
         ->deleteOne(["_id" => new ObjectId($id)]); 
     }
