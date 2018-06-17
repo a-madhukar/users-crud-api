@@ -1,8 +1,21 @@
 <?php 
 
-namespace App; 
+namespace App;
 
-class Model 
+use Mongo; 
+
+
+trait Model 
 {
-    
+
+    protected static function collection()
+    {
+        $instance = new static; 
+
+        return Mongo::get()->usersdatabase->{$instance->collection};
+    }
+
+
+
+
 }

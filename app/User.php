@@ -6,8 +6,10 @@ use Mongo;
 use MongoDB\BSON\ObjectId; 
 
 
-class User extends Model 
+class User 
 {
+
+    use Model; 
 
     protected $collection = "users"; 
 
@@ -15,10 +17,8 @@ class User extends Model
 
     public static function persist($attributes)
     {
-        $collection = Mongo::get()->usersdatabase->users; 
 
-
-        $record = $collection->insertOne([
+        $record = self::collection()->insertOne([
             "username" => isset($attributes['username']) ? $attributes['username'] : '', 
             "email" => isset($attributes['email']) ? $attributes['email'] : '', 
             "role" => isset($attributes['role']) ? $attributes['role'] : '', 
@@ -32,7 +32,6 @@ class User extends Model
 
     public static function findAndUpdate($id, $attributes)
     {
-        $collection = Mongo::get()->usersdatabase->users; 
 
         $attributes = [
             "username" => isset($attributes['username']) ? $attributes['username'] : '', 
@@ -45,7 +44,7 @@ class User extends Model
         $filters = ["_id" => new ObjectId("$id")]; 
 
 
-        $record = $collection->findOneAndReplace($filters, $attributes); 
+        $record = self::collection()->findOneAndReplace($filters, $attributes); 
 
 
         return $record; 
@@ -58,10 +57,7 @@ class User extends Model
 
     public static function all()
     {
-        $collection = Mongo::get()->usersdatabase->users; 
-
-        return $collection->find()->toArray();
-
+        return self::collection()->find()->toArray();
     }
 
 
@@ -70,12 +66,9 @@ class User extends Model
 
     public static function findById($id)
     {
-
-        $collection = Mongo::get()->usersdatabase->users; 
-
         if(strlen($id) < 24) return null; 
 
-        return $collection->findOne([
+        return self::collection()->findOne([
             "_id" => new ObjectId("$id"),  
         ]);
     }
@@ -85,11 +78,10 @@ class User extends Model
 
     public static function delete($id)
     {
-        $collection = Mongo::get()->usersdatabase->users; 
-
         if(strlen($id) < 24) return null; 
 
-        return $collection->deleteOne(["_id" => new ObjectId("$id")]); 
+        return self::collection()
+        ->deleteOne(["_id" => new ObjectId("$id")]); 
     }
 
 
