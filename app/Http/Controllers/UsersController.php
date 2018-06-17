@@ -46,11 +46,12 @@ class UsersController extends Controller
 
 
 
-    public function store(Request $request)
+    public function store(Request $request, $userId = null)
     {
         return response()->json([
             "data" => User::persist(
-                $request->all(["username","email","role"])
+                $request->all(["username","email","role"]), 
+                $userId
             )
         ]); 
     }
@@ -73,7 +74,7 @@ class UsersController extends Controller
 
     public function destroy(Request $request, $userId)
     {
-        
+
         return response()->json([
             "data" => User::delete($userId)
         ]); 

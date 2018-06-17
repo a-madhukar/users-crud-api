@@ -11,26 +11,12 @@ class User
 
     use Model; 
 
+
     protected $collection = "users"; 
 
 
 
-    public static function persist($attributes)
-    {
-
-        $record = self::collection()->insertOne([
-            "username" => isset($attributes['username']) ? $attributes['username'] : '', 
-            "email" => isset($attributes['email']) ? $attributes['email'] : '', 
-            "role" => isset($attributes['role']) ? $attributes['role'] : '', 
-        ]); 
-
-        return $record->getInsertedId();
-    }
-
-
-
-
-    public static function findAndUpdate($id, $attributes)
+    public static function persist($attributes, $userId = null)
     {
 
         $attributes = [
@@ -39,15 +25,38 @@ class User
             "role" => isset($attributes['role']) ? $attributes['role'] : '', 
         ]; 
 
+
+        return call_user_func_array(
+            [new static, is_null($userId) ? "insertAndGetId" : "findAndUpdate"], 
+            func_get_args()
+        ); 
+        
+    }
+
+
+
+
+    public static function insertAndGetId($attributes, $id = null)
+    {
+        $record = self::collection()->insertOne($attributes); 
+
+        return self::findById($record->getInsertedId());
+
+    }
+
+
+
+
+    public static function findAndUpdate($attributes, $id)
+    {
+
         if(strlen($id) < 24) return null; 
 
         $filters = ["_id" => new ObjectId("$id")]; 
 
-
         $record = self::collection()->findOneAndReplace($filters, $attributes); 
 
-
-        return $record; 
+        return self::findById($id); 
 
     }
 
@@ -76,12 +85,13 @@ class User
 
 
 
+
     public static function delete($id)
     {
         if(strlen($id) < 24) return null; 
 
         return self::collection()
-        ->deleteOne(["_id" => new ObjectId("$id")]); 
+        ->deleteOne(["_id" => new ObjectId($id)]); 
     }
 
 

@@ -14,9 +14,9 @@ $router->get('users', 'UsersController@index');
 $router->get('users/{userId}', 'UsersController@show'); 
 
 
-$router->post('users', 'UsersController@store'); 
+$router->post('users[/{userId}]', 'UsersController@store'); 
 
-$router->post('users/{userId}', 'UsersController@update'); 
+// $router->post('users/{userId}', 'UsersController@update'); 
 
 
 $router->post('users/delete/{userId}', 'UsersController@destroy'); 
