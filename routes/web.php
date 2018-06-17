@@ -8,45 +8,60 @@ $router->get('/', function () use ($router) {
 
 
 
-$router->get('mongo', function() {
-    // $collection = Mongo::get()->mydatabase->mycollection;
-    // return $collection->find()->toArray();
-
-    $collection = Mongo::get()->usersdatabase->users; 
+$router->get('users', 'UsersController@index'); 
 
 
-    // $insertOneResult = $collection->insertOne([
-    //     'username' => 'admin',
-    //     'email' => 'admin@example.com',
-    //     'name' => 'Admin User',
-    // ]);
+$router->get('users/{userId}', 'UsersController@show'); 
+
+
+$router->post('users', 'UsersController@store'); 
+
+$router->post('users/{userId}', 'UsersController@update'); 
+
+
+$router->post('users/delete/{userId}', 'UsersController@destroy'); 
 
 
 
-    $insertOneResult = $collection->insertOne([
-        'username' => 'ajay',
-        'email' => 'ajay@example.com',
-        'name' => 'Normal User',
-    ]);
+// $router->get('mongo', function() {
+//     // $collection = Mongo::get()->mydatabase->mycollection;
+//     // return $collection->find()->toArray();
+
+//     $collection = Mongo::get()->usersdatabase->users; 
 
 
-    return $collection->find()->toArray();
+//     // $insertOneResult = $collection->insertOne([
+//     //     'username' => 'admin',
+//     //     'email' => 'admin@example.com',
+//     //     'name' => 'Admin User',
+//     // ]);
 
 
-    // dd(Mongo::get()->usersdatabase->users->find()->toArray());
+
+//     $insertOneResult = $collection->insertOne([
+//         'username' => 'ajay',
+//         'email' => 'ajay@example.com',
+//         'name' => 'Normal User',
+//     ]);
 
 
-    // $collection = Mongo::get()->usersdatabase->users; 
+//     return $collection->find()->toArray();
 
 
-    // $insertOneResult = $collection->insertOne([
-    //     'username' => 'admin',
-    //     'email' => 'admin@example.com',
-    //     'name' => 'Admin User',
-    // ]);
+//     // dd(Mongo::get()->usersdatabase->users->find()->toArray());
 
 
-    // return $collection->find()->toArray();
+//     // $collection = Mongo::get()->usersdatabase->users; 
 
 
-});
+//     // $insertOneResult = $collection->insertOne([
+//     //     'username' => 'admin',
+//     //     'email' => 'admin@example.com',
+//     //     'name' => 'Admin User',
+//     // ]);
+
+
+//     // return $collection->find()->toArray();
+
+
+// });
